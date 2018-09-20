@@ -19,3 +19,29 @@ void printTop(node *head)
     int len = findLength(head);
     findByPosition(head, len); 
 }
+
+void arr_push(int arr[], int &length, int value)
+{
+    arr[length] = value;
+    length++;
+}
+
+void arr_pop(int &length)
+{
+    if (length == 0)
+    {
+        cout << "Please insert element!" << endl;
+        return;
+    }
+    length--;
+}
+
+void arr_print_top(int arr[], int &length)
+{
+    if (length == 0)
+    {
+        cout << "No element in stack!" << endl;
+        return;
+    }
+    cout << "Top element is: " << arr[length - 1] << endl;
+}
