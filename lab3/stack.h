@@ -11,6 +11,11 @@ void push(node *head, int value)
 void pop(node *head)
 {
     int len = findLength(head);
+    if(len == 0)
+    {
+        cout << "utga baihgui baina!";
+        return;
+    }
     deleteWithPosition(head, len + 1);
 }
 
