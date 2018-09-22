@@ -96,12 +96,39 @@ void arr_enqueue(int arr[], int &length, int &head, int &tail, int value)
     }
 }
 
-void arr_dequeue(int &head)
+void arr_dequeue(int &length, int &head, int &tail)
 {
-    head++;
+    if (head + 1 == length)
+    {
+        if (tail == length)
+        {
+            cout << "Array is empty!" << endl;
+            return;
+        }
+        head = 0;
+        return;
+    } else {
+        if(head == tail) 
+        {
+            cout << "Array is empty!" << endl;
+            return;
+        }
+        head++;
+    }
 }
 
-int check_head(int &head, int &tail)
+void print_arr_queue(int arr[], int length, int head, int tail)
 {
-
+    while (head != tail)
+    {
+        if(head < length)
+        {
+            cout << head << ": " <<  arr[head] << endl;
+            head++;
+            continue;
+        } else {
+            head = 0;
+            cout << head << ": " <<  arr[head] << endl;
+        }
+    }
 }

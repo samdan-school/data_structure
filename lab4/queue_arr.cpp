@@ -9,6 +9,7 @@ int main()
     int tail = 0;
     int length = arr_len(queue_array);
 
+
     arr_enqueue(queue_array, length, head, tail, 15);
     arr_enqueue(queue_array, length, head, tail, 88);
     arr_enqueue(queue_array, length, head, tail, 17);
@@ -16,14 +17,17 @@ int main()
     arr_enqueue(queue_array, length, head, tail, 23);
     arr_enqueue(queue_array, length, head, tail, 3);
     arr_enqueue(queue_array, length, head, tail, 9);
-    arr_enqueue(queue_array, length, head, tail, 481);
-    arr_enqueue(queue_array, length, head, tail, 4546);
     arr_enqueue(queue_array, length, head, tail, 65);
+    arr_enqueue(queue_array, length, head, tail, 0);
+    arr_enqueue(queue_array, length, head, tail, 0);
+    arr_dequeue(length, head, tail);
+    arr_dequeue(length, head, tail);
+    arr_dequeue(length, head, tail);
+    arr_dequeue(length, head, tail);
     arr_enqueue(queue_array, length, head, tail, 0);
 
     cout << "Head: " << head << endl;
     cout << "Tail: " << tail << endl;
 
-    for (int i = 0; i < length; i++)
-        cout << queue_array[i] << endl;
+    print_arr_queue(queue_array, length, head, tail);
 }
