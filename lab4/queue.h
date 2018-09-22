@@ -1,6 +1,8 @@
 #include <iostream>
 using namespace std;
 
+#define arr_len(a) (sizeof(a) / sizeof(*a))
+
 struct node {
     int data;
     node *next;
@@ -69,10 +71,29 @@ class Queue
 };
 
 
-void arr_enqueue(int arr[], int &tail, int value)
+void arr_enqueue(int arr[], int &length, int &head, int &tail, int value)
 {
-    arr[tail] = value;
-    tail++;
+    if (tail == length)
+    {
+        if (head == 0)
+        {
+            cout << "Array is full!" << endl;
+            return;
+        }
+        tail = 0;
+        arr[0] = value;
+        return;
+    } else {
+        if (tail + 1 == head)
+        {
+            cout << "Array is full!" << endl;
+            return;
+        }
+        arr[tail] = value;
+        tail++;
+
+        return;
+    }
 }
 
 void arr_dequeue(int &head)

@@ -4,18 +4,26 @@ using namespace std;
 
 int main()
 {
-    int queue_array[100];
+    int queue_array[10];
     int head = 0;
     int tail = 0;
+    int length = arr_len(queue_array);
 
-    arr_enqueue(queue_array, tail, 15);
-    arr_enqueue(queue_array, tail, 88);
-    arr_enqueue(queue_array, tail, 17);
-    arr_enqueue(queue_array, tail, 1);
-    arr_enqueue(queue_array, tail, 23);
+    arr_enqueue(queue_array, length, head, tail, 15);
+    arr_enqueue(queue_array, length, head, tail, 88);
+    arr_enqueue(queue_array, length, head, tail, 17);
+    arr_enqueue(queue_array, length, head, tail, 1);
+    arr_enqueue(queue_array, length, head, tail, 23);
+    arr_enqueue(queue_array, length, head, tail, 3);
+    arr_enqueue(queue_array, length, head, tail, 9);
+    arr_enqueue(queue_array, length, head, tail, 481);
+    arr_enqueue(queue_array, length, head, tail, 4546);
+    arr_enqueue(queue_array, length, head, tail, 65);
+    arr_enqueue(queue_array, length, head, tail, 0);
 
-    arr_dequeue(head);
+    cout << "Head: " << head << endl;
+    cout << "Tail: " << tail << endl;
 
-    for (int i = head; i < tail; i++)
+    for (int i = 0; i < length; i++)
         cout << queue_array[i] << endl;
 }
