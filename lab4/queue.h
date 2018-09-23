@@ -21,7 +21,7 @@ class Queue
     {
         length = 0;
         head = new node;
-        tail = new node;
+        tail = head;
         head->next = tail;
     }
     void enqueue(int value)
@@ -41,12 +41,12 @@ class Queue
         if (length == 0)
             return -2147483648;
 
-        node *delete_node = head->next->next;
+        node *delete_node = head->next;
         int return_data = delete_node->data;
 
         length--;
         
-        head->next->next = delete_node->next;
+        head->next = delete_node->next;
 
         delete delete_node;
 
@@ -60,7 +60,7 @@ class Queue
 
     void print_queue()
     {
-        node *current = head->next->next;
+        node *current = head->next;
 
         for (int i = 0; i < length; i++)
         {
