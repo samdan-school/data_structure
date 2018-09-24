@@ -1,6 +1,8 @@
 #include <iostream>
 using namespace std;
 
+#define array_len(a) ( sizeof(a) / sizeof(a[0]) )
+
 struct node {
     int data;
     node *next;
@@ -69,13 +71,23 @@ class Queue
 };
 
 
-void arr_enqueue(int arr[], int &tail, int value)
+void arr_enqueue(int arr[], int &head, int &tail, int value)
 {
+    int tail_postion;
+    if (++tail >= (int)(sizeof(arr) / sizeof(*arr)))
+        tail_postion = 0;
+    else
+        tail_postion = tail;
+
+    if (head == tail++)
+    {
+        cout << "Husnegt duursen baina!";
+        return;
+    }
     arr[tail] = value;
-    tail++;
 }
 
-void arr_dequeue(int &head)
+void arr_dequeue(int &head, int &tail)
 {
     head++;
 }
