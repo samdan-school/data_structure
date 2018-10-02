@@ -21,6 +21,12 @@ void draw_line_vertex(int x);
 void click_on_draw(int x, int y);
 int find_row(int x);
 int find_column(int y);
+bool check_position(int x, int y);
+bool check_win(int column, int row);
+int count_horizontal(int column, int row);
+int count_count_vertical(int column, int row);
+int count_left_to_right_diagnal(int column, int row);
+int count_rignt_left(int column, int row);
 
 void resize(int w, int h)
 {
@@ -93,17 +99,24 @@ void click_on_draw(int x, int y)
     int row = find_row(x);
     int column = find_column(y);
 
-    cout << "X: " << x << endl;
+    cout << "X: => " << x << endl;
     cout << "Y: " << y << endl;
+
+    cout << check_position(column, row) << endl;
 	
-	if (user_turn == 1)
+    if (check_position(column, row) != 1)
     {
-        board_array[column][row] = user_turn;
-        user_turn = 2;
-    } else {
-        board_array[column][row] = user_turn;
-        user_turn = 1;
+        if (user_turn == 1)
+        {
+            board_array[column][row] = user_turn;
+            user_turn = 2;
+        } else {
+            board_array[column][row] = user_turn;
+            user_turn = 1;
+        }
+        check_win(column, row);
     }
+
         cout << "************" << endl;
     for (int i = 0; i < LINE_NUMBER; i++)
     {
@@ -121,4 +134,112 @@ int find_row(int x)
 int find_column(int y)
 {
     return y / (BOARD_WIDTH / LINE_NUMBER);
+}
+
+bool check_position(int column, int row)
+{
+    if (board_array[column][row] != 0)
+    {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+bool check_win(int column, int row)
+{
+    if (count_left_to_right_diagnal(column, row) == 5 || count_horizontal(column, row) == 5 || count_count_vertical(column, row) == 5)
+    {
+        cout << "WIN" << endl;
+        return 1;
+    }
+
+    return 0;
+}
+
+int count_horizontal(int column, int row)
+{
+    int play_number = board_array[column][row];
+    int count = 0;
+    int start_row = 0;
+    
+    start_row = ( column - 5 < 0 ) ? 0 : (column - 5);
+    int end_row = ( start_row + 5  < LINE_NUMBER) ? ( start_row - 5 ) : LINE_NUMBER; 
+
+    for(int i = start_row; i < end_row; i++)
+    {
+        if (count == 5)
+        {
+            break;
+        }
+
+        if (board_array[column][i] == play_number)
+        {
+            count++;
+        } else {
+            count = 0;
+        }
+    }
+    return count;
+}
+
+int count_count_vertical(int column, int row)
+{
+    int play_number = board_array[column][row];
+    int count = 0;
+    int start_column = 0;
+    
+    start_column = ( column - 5 < 0 ) ? 0 : (column - 5);
+    int end_column = ( start_column + 5  < LINE_NUMBER) ? ( start_column - 5 ) : LINE_NUMBER; 
+
+    for(int i = start_column; i < end_column; i++)
+    {
+        if (count == 5)
+        {
+            break;
+        }
+
+        if (board_array[i][row] == play_number)
+        {
+            count++;
+        } else {
+            count = 0;
+        }
+    }
+    return count;
+}
+
+int count_left_to_right_diagnal(int column, int row)
+{
+    int play_number = board_array[column][row];
+    int count = 0;
+    int i = 0;
+
+    while (i < 9 && ( end_length + i < LINE_NUMBER) )
+    {
+        if (count == 5)
+        {
+            break;
+        }
+        
+        if (board_array[start_column + i][start_row + i] == play_number)
+        {
+            count++;
+        } else {
+            count = 0;
+        }
+        i++;
+        cout << "Column " << start_column << endl;
+        cout << "Row " << start_row << endl;
+        start_column++;
+        start_row++;
+    }
+
+    return count;
+}
+
+
+int count_rignt_left(int column, int row)
+{
+
 }
