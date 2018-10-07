@@ -1,5 +1,5 @@
-#include <iostream>;
-#include <ctime>;
+#include <iostream>
+#include <ctime>
 using namespace std;
 
 int main()
