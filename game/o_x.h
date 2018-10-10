@@ -1,3 +1,6 @@
+#ifndef O_X_H
+#define O_X_H
+
 #include <GL/glut.h>
 #include <iostream>
 using namespace std;
@@ -26,7 +29,7 @@ bool check_win(int column, int row);
 int count_horizontal(int column, int row);
 int count_count_vertical(int column, int row);
 int count_left_to_right_diagnal(int column, int row);
-int count_rignt_left(int column, int row);
+int count_right_to_left_diagnal(int column, int row);
 
 void resize(int w, int h)
 {
@@ -99,9 +102,6 @@ void click_on_draw(int x, int y)
     int row = find_row(x);
     int column = find_column(y);
 
-    cout << "X: => " << x << endl;
-    cout << "Y: " << y << endl;
-
     cout << check_position(column, row) << endl;
 	
     if (check_position(column, row) != 1)
@@ -148,7 +148,7 @@ bool check_position(int column, int row)
 
 bool check_win(int column, int row)
 {
-    if (count_left_to_right_diagnal(column, row) == 5 || count_horizontal(column, row) == 5 || count_count_vertical(column, row) == 5)
+    if (count_right_to_left_diagnal(column, row) == 5 || count_left_to_right_diagnal(column, row) == 5 || count_horizontal(column, row) == 5 || count_count_vertical(column, row) == 5)
     {
         cout << "WIN" << endl;
         return 1;
@@ -163,8 +163,8 @@ int count_horizontal(int column, int row)
     int count = 0;
     int start_row = 0;
     
-    start_row = ( column - 5 < 0 ) ? 0 : (column - 5);
-    int end_row = ( start_row + 5  < LINE_NUMBER) ? ( start_row - 5 ) : LINE_NUMBER; 
+    start_row = ( row - 5 < 0 ) ? 0 : (row - 5);
+    int end_row = ( row + 5  < LINE_NUMBER) ? ( row + 5 ) : LINE_NUMBER; 
 
     for(int i = start_row; i < end_row; i++)
     {
@@ -190,7 +190,7 @@ int count_count_vertical(int column, int row)
     int start_column = 0;
     
     start_column = ( column - 5 < 0 ) ? 0 : (column - 5);
-    int end_column = ( start_column + 5  < LINE_NUMBER) ? ( start_column - 5 ) : LINE_NUMBER; 
+    int end_column = ( column + 5  < LINE_NUMBER) ? ( column + 5 ) : LINE_NUMBER; 
 
     for(int i = start_column; i < end_column; i++)
     {
@@ -214,32 +214,70 @@ int count_left_to_right_diagnal(int column, int row)
     int play_number = board_array[column][row];
     int count = 0;
     int i = 0;
+    int max_of_two;
+    int end_point;
 
-    while (i < 9 && ( end_length + i < LINE_NUMBER) )
+    while (column > 0 && row > 0 && i < 5)
+    {
+        column--;
+        row--;
+        i++;
+    }
+
+    max_of_two = column > row ? column : row;
+    end_point = (max_of_two + 5 < LINE_NUMBER) ? max_of_two + 5 : LINE_NUMBER;    
+
+    for (int i = 0; i < end_point; i++)
     {
         if (count == 5)
         {
             break;
         }
-        
-        if (board_array[start_column + i][start_row + i] == play_number)
+
+        if (board_array[column + i][row + i] == play_number)
         {
             count++;
         } else {
             count = 0;
         }
-        i++;
-        cout << "Column " << start_column << endl;
-        cout << "Row " << start_row << endl;
-        start_column++;
-        start_row++;
     }
-
     return count;
 }
 
 
-int count_rignt_left(int column, int row)
+int count_right_to_left_diagnal(int column, int row)
 {
+    int play_number = board_array[column][row];
+    int count = 0;
+    int i = 0;
+    int max_of_two;
+    int end_point;
 
+    while (column < LINE_NUMBER && row > 0 && i < 5)
+    {
+        column++;
+        row--;
+        i++;
+    }
+
+    max_of_two = column > row ? column : row;
+    end_point = (max_of_two + 5 < LINE_NUMBER) ? max_of_two + 5 : LINE_NUMBER;    
+
+    for (int i = 0; i < end_point; i++)
+    {
+        if (count == 5)
+        {
+            break;
+        }
+
+        if (board_array[column - i][row + i] == play_number)
+        {
+            count++;
+        } else {
+            count = 0;
+        }
+    }
+    return count;
 }
+
+#endif
