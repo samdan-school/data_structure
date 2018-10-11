@@ -1,6 +1,7 @@
 #ifndef O_X_H
 #define O_X_H
 
+#include <math.h>
 #include <GL/glut.h>
 #include <iostream>
 using namespace std;
@@ -21,6 +22,8 @@ void mouse(int button, int state, int x, int y);
 void draw_board();
 void draw_line_horizontal(int y);
 void draw_line_vertex(int x);
+void draw_circle(int column, int row);
+void draw_cross(int column, int row);
 void click_on_draw(int x, int y);
 int find_row(int x);
 int find_column(int y);
@@ -97,32 +100,57 @@ void mouse(int button, int state, int x, int y)
     }
 }
 
+void draw_circle(int column, int row)
+{
+    int const cell_width = BOARD_WIDTH / LINE_NUMBER;
+    int radius = ( BOARD_WIDTH / LINE_NUMBER ) / 2 - 3;
+    double degree;
+
+	glBegin(GL_LINE_LOOP);
+    for (int circle_point = 0; circle_point < 360; circle_point++)
+    {
+        degree = circle_point * M_PI / 180;         
+        glVertex2f( radius * cos(degree) + cell_width * row + cell_width / 2, radius * sin(degree) + ( BOARD_HEIGHT - cell_width * column - cell_width / 2 ));
+    }
+	glEnd();
+	glFlush();
+};
+
+void draw_cross(int column, int row)
+{
+    int const cell_width = BOARD_WIDTH / LINE_NUMBER;
+
+	glBegin(GL_LINES);
+    // Draw left to rihgt line
+    glVertex2f(row * cell_width + (3), BOARD_WIDTH - ( column * cell_width + 3 ) );
+    glVertex2f(row * cell_width + (cell_width - 3)  , BOARD_WIDTH - ( column * cell_width + cell_width - 3 ));
+
+    // Draw rihgt to left line
+    glVertex2f(row * cell_width + ( cell_width - 3), BOARD_WIDTH - ( column * cell_width + 3 ) );
+    glVertex2f(row * cell_width + (3)  , BOARD_WIDTH - ( column * cell_width + cell_width - 3 ));
+
+
+	glEnd();
+	glFlush();
+};
 void click_on_draw(int x, int y)
 {
     int row = find_row(x);
     int column = find_column(y);
 
-    cout << check_position(column, row) << endl;
-	
     if (check_position(column, row) != 1)
     {
         if (user_turn == 1)
         {
             board_array[column][row] = user_turn;
+            draw_circle(column, row);
             user_turn = 2;
         } else {
             board_array[column][row] = user_turn;
+            draw_cross(column, row);
             user_turn = 1;
         }
         check_win(column, row);
-    }
-
-        cout << "************" << endl;
-    for (int i = 0; i < LINE_NUMBER; i++)
-    {
-        for (int j = 0; j < LINE_NUMBER; j++)
-            cout << board_array[i][j] << ", ";
-        cout << endl;
     }
 }
 
@@ -150,7 +178,7 @@ bool check_win(int column, int row)
 {
     if (count_right_to_left_diagnal(column, row) == 5 || count_left_to_right_diagnal(column, row) == 5 || count_horizontal(column, row) == 5 || count_count_vertical(column, row) == 5)
     {
-        cout << "WIN" << endl;
+        glutPostRedisplay();
         return 1;
     }
 
