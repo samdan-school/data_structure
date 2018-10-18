@@ -50,5 +50,20 @@ int main()
 		 << "CHILDREN IS: " << endl;
 	children(cbtree, 0, SIZE - 1);
 
+	cout << endl
+		 << endl
+		 << "PREORDER IS: " << endl;
+	preorder(cbtree, 0, SIZE - 1);
+
+	cout << endl
+		 << endl
+		 << "INORDER IS: " << endl;
+	inorder(cbtree, 0, SIZE - 1);
+
+	cout << endl
+		 << endl
+		 << "POSTORDER IS: " << endl;
+	postorder(cbtree, 0, SIZE - 1);
+
 	return 0;
 }
