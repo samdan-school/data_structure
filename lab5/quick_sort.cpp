@@ -58,14 +58,6 @@ int partition(int *array, int start, int end)
                 compare_start++;
             }
         }
-        
-        cout << "St: " << compare_start << "   " << "Sp: " << compare_end << endl;
-        cout << "St val: " << array[compare_start] << "   " << "Sp val: " << array[compare_end] << endl;
-        for(int i = 0; i < 8; i++)
-        {
-            cout << array[i] << ", ";
-        }
-        cout << endl;
     }
         
     return index;
