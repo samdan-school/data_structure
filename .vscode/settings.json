@@ -1,5 +1,6 @@
 {
 	"files.associations": {
+		"*.ejs": "ejs",
 		"*.tcc": "cpp",
 		"cctype": "cpp",
 		"clocale": "cpp",
@@ -22,6 +23,7 @@
 		"string_view": "cpp",
 		"system_error": "cpp",
 		"type_traits": "cpp",
-		"typeinfo": "cpp"
+		"typeinfo": "cpp",
+		"vector": "cpp"
 	}
 }
