@@ -40,6 +40,7 @@
 # not ignore lab folder
 !lab*/
 !game/
+!research/
 
 .vscode
 *.exe
