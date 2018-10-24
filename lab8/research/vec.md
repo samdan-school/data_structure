@@ -1,3 +1,5 @@
+https://www.codeguru.com/cpp/cpp/cpp_mfc/stl/article.php/c4027/C-Tutorial-A-Beginners-Guide-to-stdvector-Part-1.htm
+
 to void allocation too often use `reserve()` member function. The parameter it given, vector reserve at least that amount of memory.
 
 `reserve()` **will grow the allocated storage of the vector, if necessary but will never shrink it.**
@@ -36,6 +38,26 @@ Another way to enlarge vector is use `push_back()`.
 Line 51-61 code produce the same result.
 1. 1st is first `resize(10)` and initialize with default constructor. After in valid objects we use `set()` to give value into `val_`.
 2. 2nd version, we first `reserve(10)` element. The vector allocate its storage. Then, we create `X` with `X(val)` use it push into `array_push()` vector.
+
+## Operation on Vector
+We now know how to fill vector, so let's learn how to operate on them. First let's compare between C-style array, and possibility over them.
+
+###Initialize vector with c-style array
+There is another constructor 1st is first element of array, 2nd is one-past-last of array.
+**[first, one-past-last]**
+```cpp {.line-number}
+double p[] = {1, 2, 3, 4, 5};
+std::vector<double> a(p, p + 5);
+```
+
+###Care about memory reallocation
+```cpp {.line-number}
+std::vector<int> v(5);
+int *pi = &v[3];
+v.push_back(999);
+*pi = 333;                  // <-- probably an error, pi isn't valid any more
+``` 
+Vector may reallocated after `push_back()`.
 
 
 

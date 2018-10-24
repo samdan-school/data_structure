@@ -1,6 +1,15 @@
 #include <iostream>
 #include <vector>
 
+// * C-style array vs Vector
+double mean(double *array, size_t n) {
+    double m = 0;
+    for(size_t i = 0; i < n; i++) {
+        m += array[i];
+    }
+    return m / n;
+};
+
 int main() {
     std::vector<char> array;
     array.reserve(10); // make room for 10 elements
@@ -59,18 +68,19 @@ int main() {
     for(int i = 0; i < 10; i++) {
         ax.push_back(X(i));
     }
-    
-    // * C-style array vs Vector
-    double mean(double *array, size_t n) {
-        double m = 0;
-        for(size_t i = 0; i < n; i++) {
-            m += array[i];
-        }
-        return m / n;
-    };
 
+    // C-style array    
     double arr[] = {1, 2, 3, 4, 5};
     std::cout << mean(arr, 5) << std::endl; // will print 3
+
+    // vector
+    std::vector<double> a;
+    a.push_back(1);
+    a.push_back(2);
+    a.push_back(3);
+    a.push_back(4);
+    a.push_back(5);
+    std::cout << mean(&a[0], 5) << std::endl;
 
 
 

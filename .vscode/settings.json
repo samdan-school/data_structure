@@ -24,6 +24,13 @@
 		"system_error": "cpp",
 		"type_traits": "cpp",
 		"typeinfo": "cpp",
-		"vector": "cpp"
+		"vector": "cpp",
+		"array": "cpp",
+		"unordered_map": "cpp",
+		"fstream": "cpp",
+		"optional": "cpp",
+		"sstream": "cpp",
+		"tuple": "cpp",
+		"utility": "cpp"
 	}
 }
