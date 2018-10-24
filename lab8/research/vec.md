@@ -126,6 +126,8 @@ Code line 101 - 115
 Compare two vector's element size by `==`, `!=`, `>=`, `<=` and  `>` It only check `size()`, so `capacity()` does not matter in comparison.
 **Note:** `<` is vector's lexicographically operator.
 
+
+
 #Further reading
 1. [C++ 11 ranged-based for](https://stackoverflow.com/questions/15927033/what-is-the-correct-way-of-using-c11s-range-based-for])
 2. [gcc compiler to c++11 on ubuntu](https://stackoverflow.com/questions/17378969/how-to-change-gcc-compiler-to-c11-on-ubuntu)
