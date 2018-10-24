@@ -57,8 +57,79 @@ int *pi = &v[3];
 v.push_back(999);
 *pi = 333;                  // <-- probably an error, pi isn't valid any more
 ``` 
-Vector may reallocated after `push_back()`.
+Vector may reallocated after `push_back()`. So wise to use `reserve()`, and ensure does not reallocate.
 
+##Iterator
+Iterator , you can dereference it to obtain the element it "points" to.
+Code line 84 - 94.
+```c++ {.line-numbers}
+std::vector<double>::const_iterator i;
+```
+This declares a const iterator i for `vector<double>`. We are using *const* iterator because we do not intend to modify the contents of the vector.
+```c++ {.line-numbers}
+i = a.begin();
+```
+The member function returns first an iterator that "points" to the **first-element** in the sequence.
+```c++ {.line-numbers}
+i != a.end();
+```
+The member function returns an iterator that "points" to the **one-past-last-element**.
+
+We can do it by pointer the same way. Code line 96 - 99.
+But we use iterator instead of pointer is because standard library has many build-in function like searching, sorting use iterator.
+
+#Member function of Vector
+
+##Constructor
+```c++ {.line-numbers}
+typedef std::vector<std::string> str_vec_t;
+str_vec_t v1;                       // Create an empty vector
+str_vec_t v2(10);                   // 10 copies of empty strings
+str_vec_t v3(10, "Hello");          // 10 copies of the string "Hello"
+str_vec_t v4(v3)                    // Copy ctor
+
+    std::list<std::string> sl;      // Create list and populate it
+    sl.push_back("cat");
+    sl.push_back("dog");
+    sl.push_back("mouse");
+
+str_vec_t v5(sl.begin(), sl.end()); // A copy of the range in another container
+
+v1 = v5                             // will copy all element from v5 to v1
+``` 
+##`Assign()` function
+The `assign()` function reinitialize the vector. Old elements are discarded and make new
+
+```c++ {.line-numbers}
+v1.assign(sl.begin(), sl.end());
+v1.assign(3, "Hello);
+```
+
+##Stack Operation
+`push_back()` to add element in last
+`pop_back()` to remove top element 
+**Note:** 
+- `pop_back()` does not return popped element value for safe exception free when popping empty vector. So peek before pop. And decrement `size()`.
+- `pop.back()` does not shirk `capacity()`.
+
+##Predefined Iterators
+There is reverse iterator `reverse_iterator` or `const` version `const_reverse_iterator`.
+
+## Element access
+- `[]` get element without check
+- `at()` check element in size, if not `std::out_of_range` error
+- `front()` get first element of vector
+- `back()` get last element of vector
+Code line 101 - 115
+
+## Comparison operation
+Compare two vector's element size by `==`, `!=`, `>=`, `<=` and  `>` It only check `size()`, so `capacity()` does not matter in comparison.
+**Note:** `<` is vector's lexicographically operator.
+
+#Further reading
+1. [C++ 11 ranged-based for](https://stackoverflow.com/questions/15927033/what-is-the-correct-way-of-using-c11s-range-based-for])
+2. [gcc compiler to c++11 on ubuntu](https://stackoverflow.com/questions/17378969/how-to-change-gcc-compiler-to-c11-on-ubuntu)
+3. [“dereferencing” a pointer](https://stackoverflow.com/questions/4955198/what-does-dereferencing-a-pointer-mean)
 
 
 
