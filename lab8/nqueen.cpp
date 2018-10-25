@@ -27,7 +27,18 @@ main() {
         it.resize(n);
 
     for (int row = 0; row < n; row++) {
-        for (int col = 0; col < n; col++) {
+        for (int col = 0; col < n + 1; col++) {
+            // if (col == n + 1) {
+            //     if ( Stack.size() <= 1 ) {
+            //         return 0;
+            //     } else {
+            //         Board[Stack[Stack.size() - 1][0]][Stack[Stack.size() - 1][1]] = 0;
+            //         row = Stack[Stack.size() - 1][0];
+            //         col = Stack[Stack.size() - 1][1];
+            //         continue;
+            //     }
+            // }
+            
             if (put_in(Board, Stack, row, col, n)) {
                 break;
             }
