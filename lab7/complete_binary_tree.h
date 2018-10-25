@@ -13,6 +13,9 @@ void descendant(int *array, int position, int length);
 void siblings(int *array, int position, int length);
 void parent(int *array, int position, int length);
 void children(int *array, int position, int length);
+void get_left(int *array, int position, int length);
+void get_right(int *array, int position, int length);
+void preorder(int *array, int position, int length);
 
 void root(int *array, int length)
 {
@@ -106,6 +109,49 @@ void children(int *array, int position, int length)
 		cout << array[position * 2 + 1] << ", ";
 	if (position * 2 + 2 <= length)
 		cout << array[position * 2 + 2] << ", ";
+}
+
+void get_left(int *array, int position, int length)
+{
+	if (position * 2 + 1 <= length)
+		cout << array[position * 2 + 1] << ", ";
+	return;
+}
+void get_right(int *array, int position, int length)
+{
+	if (position * 2 + 2 <= length)
+		cout << array[position * 2 + 2] << ", ";
+	return;
+}
+
+void preorder(int *array, int position, int length)
+{
+	if (position <= length)
+	{
+		cout << array[position] << ", ";
+		preorder(array, position * 2 + 1, length);
+		preorder(array, position * 2 + 2, length);
+	}
+}
+
+void inorder(int *array, int position, int length)
+{
+	if (position <= length)
+	{
+		inorder(array, position * 2 + 1, length);
+		cout << array[position] << ", ";
+		inorder(array, position * 2 + 2, length);
+	}
+}
+
+void postorder(int *array, int position, int length)
+{
+	if (position <= length)
+	{
+		postorder(array, position * 2 + 1, length);
+		postorder(array, position * 2 + 2, length);
+		cout << array[position] << ", ";
+	}
 }
 
 #endif
