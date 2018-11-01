@@ -1,18 +1,21 @@
 #include <iostream>
 #include <vector>
 
-bool put_in(std::vector<std::vector<int>> &Board, std::vector<std::vector<int>> &Stack, int row, int col, int n);
-void insert_into_stack(std::vector<std::vector<int>> &Stack, int row, int col);
-bool check_horizontal(std::vector<std::vector<int>> &Stack, int row);
-bool check_vertical(std::vector<std::vector<int>> &Stack, int col);
-bool check_diagonal_left_to_right(std::vector<std::vector<int>> &Stack, int row, int col, int n);
-bool check_diagonal_right_to_left(std::vector<std::vector<int>> &Stack, int row, int col, int n);
-void print_board(std::vector<std::vector<int>> &Board);
-void print_stack(std::vector<std::vector<int>> &Stack);
-void reset_board(std::vector<std::vector<int>> &Board, std::vector<std::vector<int>> &Stack);
-void reset_stack(std::vector<std::vector<int>> &Stack, int &row, int &col, int n);
+using board_type = std::vector<std::vector<int>>;
+using stack_type = std::vector<std::vector<int>>;
 
-main() {
+bool put_in(board_type &Board, stack_type &Stack, int row, int col, int n);
+void insert_into_stack(stack_type &Stack, int row, int col);
+bool threatens_horizontal(const stack_type &Stack, int row);
+bool threatens_vertical(const stack_type &Stack, int col);
+bool threatens_diagonal_left_to_right(const stack_type &Stack, int row, int col, int n);
+bool threatens_diagonal_right_to_left(const stack_type &Stack, int row, int col, int n);
+void print_board(const board_type &Board);
+void print_stack(const stack_type &Stack);
+void reset_board(board_type &Board, stack_type &Stack);
+void reset_stack(stack_type &Stack, int &row, int &col, int n);
+
+int main() {
     // Board size
     int n = 8;
     int number_of_solution = 1;
@@ -46,19 +49,18 @@ main() {
 
                 continue;
             }
-            if (check_horizontal(Stack, row)) {
+            if (threatens_horizontal(Stack, row)) {
                 continue;
             }
 
-            if (check_vertical(Stack, col)) {
+            if (threatens_vertical(Stack, col)) {
                 continue;
             }
 
-            if (check_diagonal_left_to_right(Stack, row, col, n)) {
+            if (threatens_diagonal_left_to_right(Stack, row, col, n)) {
                 continue;
             }
-
-            if (check_diagonal_right_to_left(Stack, row, col, n)) {
+            if (threatens_diagonal_right_to_left(Stack, row, col, n)) {
                 continue;
             }
 
@@ -80,7 +82,7 @@ main() {
     return 0;
 }
 
-bool put_in(std::vector<std::vector<int>> &Board, std::vector<std::vector<int>> &Stack, int row, int col, int n) {
+bool put_in(board_type &Board, stack_type &Stack, int row, int col, int n) {
     if (Board[row][col] == 0) {
         Board[row][col] = 1;
         insert_into_stack(Stack, row, col);
@@ -89,35 +91,42 @@ bool put_in(std::vector<std::vector<int>> &Board, std::vector<std::vector<int>> 
         return false;
 }
 
-void insert_into_stack(std::vector<std::vector<int>> &Stack, int row, int col) {
-    std::vector<int> position;
-    position.reserve(2);
-    position.push_back(row);
-    position.push_back(col);
-    Stack.push_back(position);
+void insert_into_stack(stack_type &Stack, int row, int col) {
+    // std::vector<int> position;
+    // position.reserve(2);
+    // position.push_back(row);
+    // position.push_back(col);
+    // Stack.push_back(position);
+
+    // to use std::initializer_list
+    // const std::vector<int> position = {row, col};
+    // Stack.push_back(position);
+
+    // Better way
+    Stack.emplace_back(std::initializer_list<int>{row, col});
 }
 
-bool check_horizontal(std::vector<std::vector<int>> &Stack, int row) {
-    for (auto &s : Stack) {
-        if (s[0] == row)
+bool threatens_horizontal(const stack_type &Stack, int row) {
+    for (auto &Queen : Stack) {
+        if (Queen[0] == row)
             return true;
     }
     return false;
 }
 
-bool check_vertical(std::vector<std::vector<int>> &Stack, int col) {
-    for (auto &s : Stack) {
-        if (s[1] == col)
+bool threatens_vertical(const stack_type &Stack, int col) {
+    for (auto &Queen : Stack) {
+        if (Queen[1] == col)
             return true;
     }
     return false;
 }
 
-bool check_diagonal_left_to_right(std::vector<std::vector<int>> &Stack, int row, int col, int n) {
+bool threatens_diagonal_left_to_right(const stack_type &Stack, int row, int col, int n) {
     int c_row = row, c_col = col;
     while (c_row >= 0 && c_col >= 0) {
-        for (auto &s : Stack) {
-            if (s[0] == c_row && s[1] == c_col)
+        for (auto &Queen : Stack) {
+            if (Queen[0] == c_row && Queen[1] == c_col)
                 return true;
         }
         c_row--;
@@ -127,8 +136,8 @@ bool check_diagonal_left_to_right(std::vector<std::vector<int>> &Stack, int row,
     c_row = row;
     c_col = col;
     while (c_row <= n && c_col <= n) {
-        for (auto &s : Stack) {
-            if (s[0] == c_row && s[1] == c_col)
+        for (auto &Queen : Stack) {
+            if (Queen[0] == c_row && Queen[1] == c_col)
                 return true;
         }
         c_row++;
@@ -137,11 +146,11 @@ bool check_diagonal_left_to_right(std::vector<std::vector<int>> &Stack, int row,
     return false;
 }
 
-bool check_diagonal_right_to_left(std::vector<std::vector<int>> &Stack, int row, int col, int n) {
+bool threatens_diagonal_right_to_left(const stack_type &Stack, int row, int col, int n) {
     int c_row = row, c_col = col;
     while (c_row <= n && c_col >= 0) {
-        for (auto &s : Stack) {
-            if (s[0] == c_row && s[1] == c_col)
+        for (auto &Queen : Stack) {
+            if (Queen[0] == c_row && Queen[1] == c_col)
                 return true;
         }
         c_row++;
@@ -151,8 +160,8 @@ bool check_diagonal_right_to_left(std::vector<std::vector<int>> &Stack, int row,
     c_row = row;
     c_col = col;
     while (c_row >= 0 && c_col <= n) {
-        for (auto &s : Stack) {
-            if (s[0] == c_row && s[1] == c_col)
+        for (auto &Queen : Stack) {
+            if (Queen[0] == c_row && Queen[1] == c_col)
                 return true;
         }
         c_row--;
@@ -161,29 +170,29 @@ bool check_diagonal_right_to_left(std::vector<std::vector<int>> &Stack, int row,
     return false;
 }
 
-void print_board(std::vector<std::vector<int>> &Board) {
+void print_board(const board_type &Board) {
     // Print Board
-    for (auto &it : Board) {
-        for (auto &val : it) {
+    for (auto &row : Board) {
+        for (auto &val : row) {
             std::cout << val;
         }
         std::cout << std::endl;
     }
 }
-void print_stack(std::vector<std::vector<int>> &Stack) {
-    for (auto &it : Stack) {
-        for (auto &val : it) {
+void print_stack(const stack_type &Stack) {
+    for (auto &row : Stack) {
+        for (auto &val : row) {
             std::cout << val;
         }
         std::cout << std::endl;
     }
 }
 
-void reset_stack(std::vector<std::vector<int>> &Stack, int &row, int &col, int n) {
+void reset_stack(stack_type &Stack, int &row, int &col, int n) {
     col = Stack[Stack.size() - 1][1];
     Stack.pop_back();
 }
 
-void reset_board(std::vector<std::vector<int>> &Board, std::vector<std::vector<int>> &Stack) {
+void reset_board(board_type &Board, stack_type &Stack) {
     Board[Stack[Stack.size() - 1][0]][Stack[Stack.size() - 1][1]] = 0;
 }
