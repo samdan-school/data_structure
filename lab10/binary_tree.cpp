@@ -1,5 +1,6 @@
 #if !defined(BINARY_TREE_CPP)
 #define BINARY_TREE_CPP
+#include <algorithm>
 #include <iostream>
 using namespace std;
 
@@ -8,77 +9,106 @@ class node {
     int value;
     node *left_child;
     node *right_child;
+    int height;
 
     node() {
         value = 0;
         left_child = nullptr;
         right_child = nullptr;
+        height = 0;
     }
 
     node(int value) {
         this->value = value;
         left_child = nullptr;
         right_child = nullptr;
+        height = 0;
     }
 };
 
 class Binary_tree {
    public:
     node *root;
-    int lenght;
 
     Binary_tree(int value) {
         root = new node(value);
-        lenght = 1;
     }
 
-    void insert_node(int value) {
-        node *current = root;
+    void insert(int value) {
+        this->root = insert(this->root, value);
+    }
 
-        while (1) {
-            if (current->value > value) {
-                if (current->left_child) {
-                    current = current->left_child;
+    node *insert(node *current, int value) {
+        if (current == nullptr) {
+            current = new node(value);
+        } else if (current->value > value) {
+            current->left_child = insert(current->left_child, value);
+
+            if (height(current->left_child) - height(current->right_child) == 2) {
+                cout << "CUR VALUE: " << current->value << endl;
+                if (height(current->left_child->left_child) > height(current->left_child->right_child)) {
+                    cout << "L L OVER" << endl;
                 } else {
-                    current->left_child = new node(value);
-                    lenght++;
-                    return;
+                    cout << "L R OVER" << endl;
                 }
-            } else {
-                if (current->right_child) {
-                    current = current->right_child;
+            }
+        } else if (current->value < value) {
+            current->right_child = insert(current->right_child, value);
+
+            if (height(current->right_child) - height(current->left_child) == 2) {
+                cout << "CUR VALUE: " << current->value << endl;
+                if (height(current->right_child->left_child) > height(current->right_child->right_child)) {
+                    cout << "R L OVER" << endl;
                 } else {
-                    current->right_child = new node(value);
-                    lenght++;
-                    return;
+                    cout << "R R OVER" << endl;
                 }
             }
         }
+
+        current->height = height(current);
+        return current;
+    }
+
+    int height(node *start) {
+        if (start == nullptr)
+            return 0;
+
+        int l = 0, r = 0;
+
+        if (start->left_child) {
+            l = height(start->left_child);
+        }
+        if (start->right_child) {
+            r = height(start->right_child);
+        }
+
+        return 1 + max(l, r);
     }
 
     node *search_node(int value) {
         node *current = root;
     }
 
-    int find_level(node *pos) {
-        }
-
-    int find_left_level(node *pos) {
-        node *current = pos;
-        if (current->left_child) {
-            return 1 + find_left_level(current->left_child);
-        } else {
-            return 0;
-        }
+    void print_tree(node *start, int depth = 0) {
+        cout << "DEPTH: " << depth << " - VALUE: " << start->value << " - HEIGHT: " << start->height << endl;
+        if (start->left_child)
+            print_tree(start->left_child, depth + 1);
+        if (start->right_child)
+            print_tree(start->right_child, depth + 1);
     }
 
-    int find_right_level(node *pos) {
-        node *current = pos;
-        if (current->right_child) {
-            return 1 + find_right_level(current->right_child);
-        } else {
-            return 0;
-        }
+    void delete_node(node *start) {
+        if (start->left_child)
+            delete_node(start->left_child);
+        if (start->right_child)
+            delete_node(start->right_child);
+        // cout << "DEST: " << start->value << endl;
+        delete start;
+    }
+
+    ~Binary_tree() {
+        // cout << endl;
+        delete_node(this->root);
     }
 };
 
