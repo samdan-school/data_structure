@@ -75,15 +75,11 @@ class Binary_tree {
         } else if (current->value > value) {
             current->left_child = insert(current->left_child, value);
 
-            if (height(current->left_child) - height(current->right_child) ==
-                2) {
-                cout << "CUR VALUE: " << current->value << endl;
+            if (height(current->left_child) - height(current->right_child) == 2) {
                 if (height(current->left_child->left_child) >
                     height(current->left_child->right_child)) {
-                    cout << "L L OVER" << endl;
                     current = left_left_swap(current);
                 } else {
-                    cout << "L R OVER" << endl;
                     left_right_swap(current);
                     current = left_left_swap(current);
                 }
@@ -91,15 +87,11 @@ class Binary_tree {
         } else if (current->value < value) {
             current->right_child = insert(current->right_child, value);
 
-            if (height(current->right_child) - height(current->left_child) ==
-                2) {
-                cout << "CUR VALUE: " << current->value << endl;
+            if (height(current->right_child) - height(current->left_child) == 2) {
                 if (height(current->right_child->right_child) >
                     height(current->right_child->left_child)) {
-                    cout << "R R OVER" << endl;
                     current = right_right_swap(current);
                 } else {
-                    cout << "R L OVER" << endl;
                     right_left_swap(current);
                     current = right_right_swap(current);
                 }
@@ -108,6 +100,77 @@ class Binary_tree {
 
         current->height = height(current);
         return current;
+    }
+
+    void remove(int value) {
+        if (!search_node(value)) {
+            cout << value << " :VALUE DOES NOT EXIST!" << endl;
+            return;
+        }
+        this->root = remove(this->root, value);
+    }
+
+    node *remove(node *current, int value) {
+        if (current->value == value) {
+            if (!current->left_child && !current->right_child) {
+                delete current;
+                return nullptr;
+            }
+
+            if (!current->left_child && current->right_child) {
+                node *temp = current->right_child;
+                delete current;
+                return temp;
+            }
+
+            if (current->left_child && !current->right_child) {
+                node *temp = current->left_child;
+                delete current;
+                return temp;
+            }
+
+            if (current->left_child && current->right_child) {
+                node *temp = find_left_right(current);
+                temp->right_child = current->right_child;
+                delete current;
+                return temp;
+            }
+        } else if (current->value > value) {
+            current->left_child = remove(current->left_child, value);
+
+            if (height(current->right_child) - height(current->left_child) == 2) {
+                if (height(current->right_child->right_child) > height(current->right_child->left_child)) {
+                    current = right_right_swap(current);
+                } else {
+                    right_left_swap(current);
+                    current = right_right_swap(current);
+                }
+            }
+        } else if (current->value < value) {
+            current->right_child = remove(current->right_child, value);
+
+            if (height(current->left_child) - height(current->right_child) == 2) {
+                if (height(current->left_child->left_child) > height(current->left_child->right_child)) {
+                    current = left_left_swap(current);
+                } else {
+                    left_right_swap(current);
+                    current = left_left_swap(current);
+                }
+            }
+        }
+
+        return current;
+    }
+
+    node *find_left_right(node *current) {
+        current = current->left_child;
+
+        while (1) {
+            if (!current->right_child) {
+                return current;
+            }
+            current = current->right_child;
+        }
     }
 
     int height(node *start) {
