@@ -41,9 +41,9 @@ class table {
         if (this->info.size() <= 0)
             return;
 
-        printf("%10s | %10s\n", "KSP", "Previous");
+        printf("%4s | %10s | %10s\n", "Node", "KSP", "Previous");
         for (int i = 0; i < this->info.size(); ++i) {
-            printf("%4d | %10d\n", this->info[i].nsp, this->info[i].previous);
+            printf("%4d | %10d | %10d\n", i, this->info[i].nsp, this->info[i].previous);
         }
         printf("\n");
     }
@@ -87,6 +87,34 @@ void print_graph() {
     }
 }
 
+void update_neighbor(int s_index, vector<int> &visited, vector<int> &unvisited, table &path) {
+    if (unvisited.size() == 1) {
+        return;
+    } else {
+        vector<node> neighbors = graph[s_index];
+        int s_wight = path.info[s_index].nsp;
+
+        for (const node &neighbor : neighbors) {
+            int n_index = neighbor.with;
+            int total_wight = s_wight + neighbor.wight;
+
+            if (total_wight < path.info[n_index].nsp) {
+                path.info[n_index].nsp = total_wight;
+                path.info[n_index].previous = s_index;
+            }
+        }
+
+        int low_wight;
+        int low_index;
+
+        for (int i = 0; i < neighbors.size(); ++i) {
+        }
+
+        // https://stackoverflow.com/questions/3385229/c-erase-vector-element-by-value-rather-than-by-position remove unvisited
+        return update_neighbor(low_index, visited, unvisited, path);
+    }
+}
+
 void find_short_path(int start, int end) {
     if (start >= graph.size() || start < 0 || end >= graph.size() || end < 0)
         return;
@@ -97,7 +125,17 @@ void find_short_path(int start, int end) {
     vector<int> visited;
     vector<int> unvisited;
 
-    table path(2);
+    unvisited.reserve(graph.size());
+    for (int i = 0; i < graph.size(); ++i)
+        unvisited.push_back(i);
+
+    table path(graph.size());
+
+    // *********
+    path.info[start].nsp = 0;
+    update_neighbor(start, visited, unvisited, path);
+    // *********
+
     path.print_table();
 }
 
@@ -116,8 +154,8 @@ int main() {
     add_edge(2, 3, 2);
     add_edge(3, 4, 4);
 
-    find_short_path();
-    print_graph();
+    find_short_path(0, 4);
+    // print_graph();
 
     return 0;
 }
