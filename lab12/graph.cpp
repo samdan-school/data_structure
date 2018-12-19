@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <algorithm>
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -94,9 +95,21 @@ void update_neighbor(int s_index, vector<int> &visited, vector<int> &unvisited, 
         vector<node> neighbors = graph[s_index];
         int s_wight = path.info[s_index].nsp;
 
+        for (const int &index : visited) {
+            neighbors.erase(remove_if(
+                                neighbors.begin(), neighbors.end(),
+                                [index](const node &neighbor) {
+                                    cout << index << " i " << (neighbor.with == index) << endl;
+                                    return neighbor.with == index;
+                                }),
+                            neighbors.end());
+        }
+
         for (const node &neighbor : neighbors) {
             int n_index = neighbor.with;
             int total_wight = s_wight + neighbor.wight;
+
+            // cout << s_index << " -> " << n_index << " t:" << total_wight << " n:" << path.info[n_index].nsp << endl;
 
             if (total_wight < path.info[n_index].nsp) {
                 path.info[n_index].nsp = total_wight;
@@ -104,13 +117,30 @@ void update_neighbor(int s_index, vector<int> &visited, vector<int> &unvisited, 
             }
         }
 
-        int low_wight;
-        int low_index;
+        int low_index = neighbors[0].with;
+        int low_wight = neighbors[0].wight;
 
-        for (int i = 0; i < neighbors.size(); ++i) {
+        for (int i = 1; i < neighbors.size(); ++i) {
+            if (low_wight > neighbors[i].wight) {
+                low_index = neighbors[i].with;
+                low_wight = neighbors[i].wight;
+            }
         }
 
-        // https://stackoverflow.com/questions/3385229/c-erase-vector-element-by-value-rather-than-by-position remove unvisited
+        visited.push_back(s_index);
+        unvisited.erase(remove_if(unvisited.begin(), unvisited.end(),
+                                  [&s_index](const int &with) { return with == s_index; }),
+                        unvisited.end());
+
+        // for (const int &v : visited) {
+        //     cout << v << ", ";
+        // }
+        // cout << endl;
+
+        // for (const int &v : unvisited) {
+        //     cout << v << ", ";
+        // }
+        // cout << endl;
         return update_neighbor(low_index, visited, unvisited, path);
     }
 }
@@ -148,14 +178,15 @@ int main() {
 
     add_edge(0, 1, 7);
     add_edge(0, 2, 3);
-    add_edge(1, 2, 1);
+    // add_edge(1, 2, 1);
     add_edge(1, 3, 2);
     add_edge(1, 4, 6);
-    add_edge(2, 3, 2);
+    // add_edge(2, 3, 2);
     add_edge(3, 4, 4);
 
     find_short_path(0, 4);
-    // print_graph();
 
+    // # include algorithm this is prety cool way to delete specific element from vector
+    // vec.erase(remove(vec.begin(), vec.end(), 10), vec.end());
     return 0;
 }
