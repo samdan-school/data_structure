@@ -65,7 +65,7 @@ void display() {
 
     switch (game_state) {
         case 0:
-            engine->stopAllSounds();
+            // engine->stopAllSounds();
             engine->play2D(SOUND_BATTLE, true);
             draw_board();
             break;
@@ -126,6 +126,7 @@ void draw_board() {
         }
     }
 
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glLineWidth(1);
     glColor3f(0.0f, 0.0f, 0.0f);
 
@@ -134,6 +135,7 @@ void draw_board() {
 
     for (int x = 0; x <= BOARD_WIDTH; x += (BOARD_WIDTH / LINE_NUMBER))
         draw_line_vertex(x);
+    glutSwapBuffers();
 }
 
 void draw_line_horizontal(int y) {
@@ -141,7 +143,6 @@ void draw_line_horizontal(int y) {
     glVertex2f(0, y);
     glVertex2f(BOARD_WIDTH, y);
     glEnd();
-    glutSwapBuffers();
 }
 
 void draw_line_vertex(int x) {
@@ -149,7 +150,7 @@ void draw_line_vertex(int x) {
     glVertex2f(x, 0);
     glVertex2f(x, BOARD_HEIGHT);
     glEnd();
-    glutSwapBuffers();
+    // glutSwapBuffers();
 }
 
 void start_game(int value) {
