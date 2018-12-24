@@ -31,6 +31,10 @@
 		"optional": "cpp",
 		"sstream": "cpp",
 		"tuple": "cpp",
-		"utility": "cpp"
+		"utility": "cpp",
+		"cstring": "cpp",
+		"deque": "cpp",
+		"cinttypes": "cpp",
+		"algorithm": "cpp"
 	}
 }
