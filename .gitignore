@@ -42,6 +42,7 @@
 !game/
 !research/
 !**/Makefile
+!irrKlang/*
 
 .vscode
 *.exe
