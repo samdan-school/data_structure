@@ -41,7 +41,7 @@
 !lab*/
 !game/
 !research/
-**/!Makefile
+!**/Makefile
 
 .vscode
 *.exe
