@@ -31,15 +31,12 @@
 *.out
 *.app
 
-# Ignore all
-*
-
 # Unignore all with extensions
 !*.*
 
 # not ignore lab folder
 !lab*/
-!game/
+!game/*
 !research/
 !**/Makefile
 !irrKlang/*
